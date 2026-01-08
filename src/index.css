@@ -1,0 +1,100 @@
+:root {
+  /* Palette from Reference Images */
+  --color-background: #FDF6E9;
+  /* Cream/Beige Background */
+  --color-primary: #F4C466;
+  /* Button Yellow / Summer Yellow */
+  --color-secondary: #8097a5;
+  /* Keep for secondary text if needed, or replace */
+
+  --color-teal: #9FE2DD;
+  /* Comfort Section Background */
+  --color-winter-blue: #006D8F;
+  /* Winter Section Background */
+  --color-footer-yellow: #F9DA88;
+  /* Footer Background */
+
+  --color-text: #2c3e50;
+  --color-text-light: #666;
+  --color-white: #ffffff;
+
+  --color-accent-brown: #854931;
+
+  --font-main: 'Nunito', sans-serif;
+
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+
+  --border-radius: 16px;
+  --border-radius-lg: 32px;
+  --border-radius-full: 9999px;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  --transition-fast: 0.2s ease-out;
+  --transition-smooth: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Button & Utility Classes */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-full);
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(244, 196, 102, 0.4);
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: 12px 24px;
+  border-radius: var(--border-radius-full);
+  font-weight: bold;
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: rgba(244, 196, 102, 0.1);
+}
