@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Facebook, Instagram } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Footer = () => {
@@ -11,12 +12,16 @@ const Footer = () => {
                 <div style={{ flex: '1 1 300px' }}>
                     <img src={logo} alt="Inpe Logo" style={{ height: '60px', width: 'auto', marginBottom: '1rem' }} />
                     <p style={{ fontWeight: 'bold', fontSize: '0.9rem', maxWidth: '300px', lineHeight: 1.6 }}>
-                        Crafting the softest, most magical footwear for the little adventurers of tomorrow. Ethical, sustainable, and full of joy.
+                        Criando os calçados mais macios e mágicos para os pequenos aventureiros de amanhã. Éticos, sustentáveis ​​e repletos de alegria.
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
                         {/* Social Circles */}
-                        <div style={{ width: '40px', height: '40px', background: 'var(--color-teal)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>F</div>
-                        <div style={{ width: '40px', height: '40px', background: 'var(--color-teal)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>I</div>
+                        <a href="#" style={{ width: '40px', height: '40px', background: 'var(--color-teal)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'transform 0.2s' }}>
+                            <Facebook size={20} strokeWidth={2.5} />
+                        </a>
+                        <a href="#" style={{ width: '40px', height: '40px', background: 'var(--color-teal)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'transform 0.2s' }}>
+                            <Instagram size={20} strokeWidth={2.5} />
+                        </a>
                     </div>
                 </div>
 

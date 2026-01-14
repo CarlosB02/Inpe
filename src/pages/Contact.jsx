@@ -4,7 +4,7 @@ import { Mail, MapPin, Facebook, Instagram, Send } from 'lucide-react';
 
 const Contact = () => {
     return (
-        <div style={{ backgroundColor: '#FDFBF7', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem' }}>
+        <div style={{ backgroundColor: '#FDFBF7', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'calc(80px + 4rem) 2rem 4rem', marginTop: '-80px' }}>
             <div style={{
                 maxWidth: '1200px',
                 width: '100%',
@@ -22,12 +22,12 @@ const Contact = () => {
                 >
                     <h1 style={{
                         color: 'var(--color-primary)', // Assuming this is the distinct barefoot yellow/orange
-                        fontSize: '3.5rem',
+                        fontSize: '2.5rem',
                         marginBottom: '2rem',
                         // fontFamily: 'serif', // Removed to use global Nunito
                         fontWeight: 'normal'
                     }}>
-                        Fale Connosco
+                        Estámos sempre disponíveis!
                     </h1>
 
                     <p style={{
@@ -121,6 +121,34 @@ const Contact = () => {
                 </motion.form>
 
             </div>
+
+            {/* Map Section */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                style={{
+                    width: '100%',
+                    maxWidth: '1200px',
+                    height: '450px',
+                    marginTop: '6rem',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.05)'
+                }}
+            >
+                <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src="https://maps.google.com/maps?q=Vouzela&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    title="Localização Vouzela"
+                ></iframe>
+            </motion.div>
         </div>
     );
 };

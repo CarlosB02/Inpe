@@ -29,6 +29,18 @@ const products = Array.from({ length: 33 }, (_, i) => {
     // Actually, looking at the previous user prompts, the brand "Barefoot" and existing "primeiros-passos" suggests kids focus.
     // But user explicitly asked for "mulher, homem, criança".
     const category = categories[i % 3];
+    const availableColors = ['#000000', '#FFFFFF', '#8B4513', '#1C1C1C', '#F5F5DC', '#A52A2A', '#000080'];
+    const randomColors = availableColors.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1);
+
+    // Generate logical sizes based on category
+    let sizes = [];
+    if (category === 'crianca') {
+        sizes = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+    } else {
+        sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
+    }
+    // Randomly select some available sizes
+    const productSizes = sizes.filter(() => Math.random() > 0.3);
 
     return {
         id: id,
@@ -38,6 +50,8 @@ const products = Array.from({ length: 33 }, (_, i) => {
         price: (30 + Math.random() * 50).toFixed(2), // Random price between 30 and 80
         image: getImg(id),
         isNew: i > 25, // Mark last few as new
+        sizes: productSizes.length > 0 ? productSizes : [sizes[0]], // Ensure at least one size
+        colors: randomColors
     };
 });
 

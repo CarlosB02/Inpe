@@ -1,18 +1,64 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
+import ProductCard from '../components/ProductCard';
+import FilterSidebar from '../components/FilterSidebar';
 import products from '../data/products';
+
 
 const Collections = () => {
     const { category } = useParams();
-    const [filter, setFilter] = useState(category || 'todos');
+    const [filters, setFilters] = useState({
+        categories: category && category !== 'todos' ? [category] : [],
+        subcategories: [], // This maps to 'Estilo'
+        sizes: [],
+        colors: [],
+        price: { min: 0, max: 200 }
+    });
 
-    // Filter logic
-    const filteredProducts = filter === 'todos'
-        ? products
-        : products.filter(p => p.category === filter);
+    // Update filters when URL param changes
+    React.useEffect(() => {
+        if (category && category !== 'todos') {
+            setFilters(prev => ({ ...prev, categories: [category] }));
+        } else {
+            setFilters(prev => ({ ...prev, categories: [] }));
+        }
+    }, [category]);
 
-    const categories = ['todos', 'mulher', 'homem', 'crianca'];
+    // Complex Filter Logic
+    const filteredProducts = products.filter(product => {
+        // Category (Gender) Filter
+        if (filters.categories.length > 0 && !filters.categories.includes(product.category)) {
+            return false;
+        }
+
+        // Subcategory (Style) Filter
+        if (filters.subcategories.length > 0 && !filters.subcategories.includes(product.subcategory)) {
+            return false;
+        }
+
+        // Size Filter
+        if (filters.sizes.length > 0) {
+            // Check if product has ANY of the selected sizes
+            const hasSize = product.sizes && product.sizes.some(s => filters.sizes.includes(s));
+            if (!hasSize) return false;
+        }
+
+        // Color Filter
+        if (filters.colors.length > 0) {
+            // Check if product has ANY of the selected colors
+            const hasColor = product.colors && product.colors.some(c => filters.colors.includes(c));
+            if (!hasColor) return false;
+        }
+
+        // Price Filter
+        const price = parseFloat(product.price);
+        if (price < filters.price.min || price > filters.price.max) {
+            return false;
+        }
+
+        return true;
+    });
 
     return (
         <div style={{ padding: '8rem 2rem 4rem', maxWidth: '1400px', margin: '0 auto' }}>
@@ -31,150 +77,52 @@ const Collections = () => {
                 </p>
             </div>
 
-            {/* Filter Buttons */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '4rem', flexWrap: 'wrap' }}>
-                {categories.map(f => (
-                    <button
-                        key={f}
-                        onClick={() => setFilter(f)}
+            <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
+                {/* Left Sidebar */}
+                <FilterSidebar filters={filters} setFilters={setFilters} />
+
+                {/* Product Grid */}
+                <div style={{ flex: 1 }}>
+                    {/* Active Filters Summary (Optional but nice) */}
+                    <div style={{ marginBottom: '1rem', color: '#666' }}>
+                        Mostrando {filteredProducts.length} produtos
+                    </div>
+
+                    <motion.div
+                        layout
                         style={{
-                            padding: '10px 32px',
-                            borderRadius: '9999px',
-                            border: 'none',
-                            backgroundColor: filter === f ? 'var(--color-teal)' : '#f0f0f0',
-                            color: filter === f ? 'white' : '#555',
-                            cursor: 'pointer',
-                            textTransform: 'capitalize',
-                            fontWeight: 'bold',
-                            fontSize: '1rem',
-                            transition: 'all 0.3s ease',
-                            boxShadow: filter === f ? '0 4px 15px rgba(28, 169, 169, 0.3)' : 'none',
-                            transform: filter === f ? 'scale(1.05)' : 'scale(1)'
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                            gap: '2.5rem'
                         }}
                     >
-                        {f === 'crianca' ? 'Criança' : f}
-                    </button>
-                ))}
-            </div>
-
-            {/* Product Grid */}
-            <motion.div
-                layout
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                    gap: '2.5rem'
-                }}
-            >
-                <AnimatePresence>
-                    {filteredProducts.map(product => (
-                        <motion.div
-                            key={product.id}
-                            layout
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            whileHover={{ y: -8 }}
-                            transition={{ duration: 0.3 }}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            <div style={{
-                                backgroundColor: 'white',
-                                borderRadius: '24px',
-                                overflow: 'hidden',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                transition: 'shadow 0.3s ease',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
-                                {/* Image Container */}
-                                <div style={{
-                                    height: '280px',
-                                    backgroundColor: '#f8f9fa',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    position: 'relative',
-                                    overflow: 'hidden',
-                                    padding: '20px'
-                                }}>
-                                    {product.isNew && (
-                                        <div style={{
-                                            position: 'absolute',
-                                            top: '15px',
-                                            left: '15px',
-                                            backgroundColor: 'var(--color-primary)',
-                                            color: 'white',
-                                            padding: '4px 12px',
-                                            borderRadius: '20px',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 'bold',
-                                            zIndex: 2
-                                        }}>
-                                            Novo
-                                        </div>
-                                    )}
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        style={{
-                                            maxWidth: '100%',
-                                            maxHeight: '100%',
-                                            objectFit: 'contain',
-                                            filter: 'drop-shadow(0 5px 15px rgba(0,0,0,0.1))',
-                                            transition: 'transform 0.5s ease'
-                                        }}
-                                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        <AnimatePresence>
+                            {filteredProducts.map(product => (
+                                <div key={product.id} style={{ height: '100%' }}>
+                                    <ProductCard
+                                        title={product.name}
+                                        price={product.price}
+                                        image={product.image}
+                                        category={product.subcategory || product.category}
+                                        id={product.id}
                                     />
                                 </div>
-
-                                {/* Content */}
-                                <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                    <div>
-                                        <span style={{ fontSize: '0.85rem', color: '#999', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
-                                            {product.subcategory}
-                                        </span>
-                                        <h3 style={{ fontSize: '1.2rem', color: '#333', marginTop: '5px', marginBottom: '10px' }}>
-                                            {product.name}
-                                        </h3>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
-                                        <span style={{ fontSize: '1.3rem', fontWeight: '900', color: 'var(--color-teal)' }}>
-                                            €{product.price}
-                                        </span>
-                                        <button style={{
-                                            width: '35px',
-                                            height: '35px',
-                                            borderRadius: '50%',
-                                            backgroundColor: '#f0f0f0',
-                                            border: 'none',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            color: '#333',
-                                            cursor: 'pointer',
-                                            transition: 'all 0.2s'
-                                        }}
-                                            onMouseOver={(e) => {
-                                                e.currentTarget.style.backgroundColor = 'var(--color-primary)';
-                                                e.currentTarget.style.color = 'white';
-                                            }}
-                                            onMouseOut={(e) => {
-                                                e.currentTarget.style.backgroundColor = '#f0f0f0';
-                                                e.currentTarget.style.color = '#333';
-                                            }}
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
+                            ))}
+                        </AnimatePresence>
+                        {filteredProducts.length === 0 && (
+                            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem', color: '#888' }}>
+                                <p>Nenhum produto encontrado com estes filtros.</p>
+                                <button
+                                    onClick={() => setFilters({ categories: [], subcategories: [], sizes: [], colors: [], price: { min: 0, max: 200 } })}
+                                    style={{ marginTop: '1rem', padding: '10px 20px', background: 'var(--color-teal)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                                >
+                                    Limpar Filtros
+                                </button>
                             </div>
-                        </motion.div>
-                    ))}
-                </AnimatePresence>
-            </motion.div>
+                        )}
+                    </motion.div>
+                </div>
+            </div>
         </div>
     );
 };

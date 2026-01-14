@@ -6,12 +6,27 @@ import logo from '../assets/logo.png';
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = React.useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+
+      // Determine visibility
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        // Scrolling down & passed threshold -> Hide
+        setIsVisible(false);
+      } else {
+        // Scrolling up -> Show
+        setIsVisible(true);
+      }
+
+      setScrolled(currentScrollY > 20);
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -27,7 +42,9 @@ const Header = () => {
       zIndex: 100,
       padding: '0 2rem',
       display: 'flex',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      transition: 'transform 0.3s ease-in-out',
+      transform: isVisible ? 'translateY(0)' : 'translateY(-200%)',
     }}>
       <div style={{
         backgroundColor: 'white',
