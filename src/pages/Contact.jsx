@@ -3,14 +3,25 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Facebook, Instagram, Send } from 'lucide-react';
 
 const Contact = () => {
+    const isMobile = window.innerWidth <= 768;
+
     return (
-        <div style={{ backgroundColor: '#FDFBF7', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'calc(80px + 4rem) 2rem 4rem', marginTop: '-80px' }}>
+        <div style={{
+            backgroundColor: '#FDFBF7',
+            minHeight: '80vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: isMobile ? 'calc(80px + 1.5rem) 1rem 2rem' : 'calc(80px + 4rem) 2rem 4rem',
+            marginTop: '-80px'
+        }}>
             <div style={{
                 maxWidth: '1200px',
                 width: '100%',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-                gap: '6rem',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(400px, 1fr))',
+                gap: isMobile ? '3rem' : '6rem',
                 alignItems: 'start'
             }}>
 
@@ -21,27 +32,26 @@ const Contact = () => {
                     transition={{ duration: 0.6 }}
                 >
                     <h1 style={{
-                        color: 'var(--color-primary)', // Assuming this is the distinct barefoot yellow/orange
-                        fontSize: '2.5rem',
-                        marginBottom: '2rem',
-                        // fontFamily: 'serif', // Removed to use global Nunito
+                        color: 'var(--color-primary)',
+                        fontSize: isMobile ? '1.8rem' : '2.5rem',
+                        marginBottom: isMobile ? '1rem' : '2rem',
                         fontWeight: 'normal'
                     }}>
-                        Estámos sempre disponíveis!
+                        Estamos sempre disponíveis!
                     </h1>
 
                     <p style={{
                         color: '#666',
-                        marginBottom: '4rem',
+                        marginBottom: isMobile ? '2rem' : '4rem',
                         lineHeight: 1.8,
-                        fontSize: '1.1rem',
+                        fontSize: isMobile ? '1rem' : '1.1rem',
                         maxWidth: '450px'
                     }}>
                         Tem dúvidas sobre o tamanho ideal ou sobre os nossos materiais?
                         Estamos aqui para ajudar em cada passo da sua jornada barefoot.
                     </p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '1.5rem' : '2.5rem' }}>
 
                         {/* Email */}
                         <div style={infoItemStyle}>
@@ -93,12 +103,12 @@ const Contact = () => {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     style={{
                         backgroundColor: 'white',
-                        padding: '3rem',
+                        padding: isMobile ? '1.5rem' : '3rem',
                         borderRadius: '24px',
                         boxShadow: '0 20px 40px rgba(0,0,0,0.03)',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '2rem'
+                        gap: isMobile ? '1.2rem' : '2rem'
                     }}
                 >
                     <div>
@@ -131,8 +141,8 @@ const Contact = () => {
                 style={{
                     width: '100%',
                     maxWidth: '1200px',
-                    height: '450px',
-                    marginTop: '6rem',
+                    height: isMobile ? '300px' : '450px',
+                    marginTop: isMobile ? '3rem' : '6rem',
                     borderRadius: '24px',
                     overflow: 'hidden',
                     boxShadow: '0 20px 40px rgba(0,0,0,0.05)'
@@ -205,7 +215,7 @@ const inputLabelStyle = {
 
 const inputStyle = {
     width: '100%',
-    padding: '16px 20px',
+    padding: window.innerWidth <= 768 ? '12px 16px' : '16px 20px',
     borderRadius: '12px',
     border: '1px solid #eee',
     backgroundColor: '#f9f9f9',

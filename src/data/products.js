@@ -17,6 +17,34 @@ const getImg = (index) => {
     return ''; // Should not happen if files exist
 };
 
+// Function to get gallery images
+const getGallery = (id) => {
+    const gallery = [];
+    const possibleExtensions = ['.png', '.jpg', '.jpeg'];
+    // Look for p{id}_1, p{id}_2, etc. up to, say, 5 or until not found
+    for (let i = 1; i <= 5; i++) {
+        let found = false;
+        for (const ext of possibleExtensions) {
+            const path = `../assets/products/p${id}_${i}${ext}`;
+            if (images[path]) {
+                gallery.push(images[path]);
+                found = true;
+                break;
+            }
+        }
+        if (!found && i === 1) break; // If first image not found, assume no gallery
+        // We continue checking because maybe p1_1 exists, p1_2 missing, p1_3 exists? Unlikely but safe to just check a few.
+        // Actually best to break if gap? User might not name perfectly sequentially. Let's just check 1-5.
+    }
+
+    // If no specific gallery images, fallback to main image repeated (current behavior)
+    if (gallery.length === 0) {
+        const mainImg = getImg(id);
+        return [mainImg, mainImg, mainImg, mainImg];
+    }
+    return gallery;
+};
+
 // Helper to assign categories to make the shop look populated
 // We have 33 items.
 const categories = ['crianca', 'mulher', 'homem'];
@@ -49,6 +77,7 @@ const products = Array.from({ length: 33 }, (_, i) => {
         subcategory: subcategories[i % 3], // Just for flavor
         price: (30 + Math.random() * 50).toFixed(2), // Random price between 30 and 80
         image: getImg(id),
+        gallery: getGallery(id),
         isNew: i > 25, // Mark last few as new
         sizes: productSizes.length > 0 ? productSizes : [sizes[0]], // Ensure at least one size
         colors: randomColors

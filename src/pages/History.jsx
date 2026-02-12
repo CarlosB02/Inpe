@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Footprints, Heart, TreeDeciduous, Users, Maximize, Activity, Zap, MoveHorizontal, Feather, Sprout } from 'lucide-react';
+import { Footprints, Heart, TreeDeciduous, Users, Maximize, Activity, Zap, HeartPlus, Feather, Sprout, ArrowRight } from 'lucide-react';
 import historyLiberdade from '../assets/history-liberdade.png';
 import historyCarinho from '../assets/history-carinho.png';
 import historySustentabilidade from '../assets/history-sustentabilidade.png';
@@ -80,9 +81,9 @@ const History = () => {
                     <h2 style={sectionTitleStyle}>A Nossa Essência</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
                         {[
-                            { icon: <Footprints size={32} />, title: 'Liberdade', text: 'Respeitamos a anatomia natural do pé.', bg: historyLiberdade },
-                            { icon: <Heart size={32} />, title: 'Carinho', text: 'Cada par é feito a pensar no conforto absoluto.', bg: historyCarinho },
-                            { icon: <TreeDeciduous size={32} />, title: 'Sustentabilidade', text: 'Materiais amigos do ambiente sempre que possível.', bg: historySustentabilidade }
+                            { icon: <Footprints size={32} />, title: 'Liberdade', text: 'Respeitamos a anatomia natural do pé.', bg: historyLiberdade, ctaText: 'Sinta a liberdade' },
+                            { icon: <TreeDeciduous size={32} />, title: 'Sustentabilidade', text: 'Materiais amigos do ambiente sempre que possível.', bg: historySustentabilidade, ctaText: 'A nossa responsabilidade' },
+                            { icon: <Heart size={32} />, title: 'Cuidado', text: 'Cada par é selecionado a pensar no conforto absoluto.', bg: historyCarinho, ctaText: 'Fale com a equipa' }
                         ].map((val, idx) => (
                             <motion.div
                                 key={idx}
@@ -95,7 +96,10 @@ const History = () => {
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     borderRadius: '24px',
-                                    transition: 'box-shadow 0.3s'
+                                    transition: 'box-shadow 0.3s',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
                                 }}
                             >
                                 <div style={{
@@ -108,12 +112,41 @@ const History = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     color: 'var(--color-primary)',
-                                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
+                                    boxShadow: '0 4px 10px #0000000d'
                                 }}>
                                     {val.icon}
                                 </div>
                                 <h3 style={{ color: 'var(--color-deep-blue)', marginBottom: '1rem' }}>{val.title}</h3>
-                                <p style={{ color: '#854931' }}>{val.text}</p>
+                                <p style={{ color: '#854931', marginBottom: '1.5rem' }}>{val.text}</p>
+
+                                <Link
+                                    to="/contactos"
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        backgroundColor: 'var(--color-primary)',
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '600',
+                                        marginTop: 'auto',
+                                        padding: '0.8rem 1.5rem',
+                                        borderRadius: '50px',
+                                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+                                    }}
+                                >
+                                    {val.ctaText} <ArrowRight size={16} />
+                                </Link>
                             </motion.div>
                         ))}
                     </div>
@@ -147,13 +180,13 @@ const History = () => {
             {/* Filosofia Barefoot Section */}
             <section style={{ backgroundColor: 'var(--color-background)', padding: '6rem 2rem' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <h2 style={{ ...sectionTitleStyle, color: '#F4C466' }}>Filosofia Barefoot</h2>
+                    <h2 style={{ ...sectionTitleStyle, color: '#F4C466' }}>Porquê Inpe?</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                         {[
                             {
                                 icon: <Maximize size={32} color="white" />,
                                 title: 'Espaço para os Dedos',
-                                text: 'Wide toe box para permitir que os dedos se espalhem naturalmente.',
+                                text: 'Zona dos dedos alargada para permitir que os dedos se espalhem naturalmente.',
                                 color: '#F4C466'
                             },
                             {
@@ -169,9 +202,9 @@ const History = () => {
                                 color: '#F4C466'
                             },
                             {
-                                icon: <MoveHorizontal size={32} color="white" />,
-                                title: 'Zero Drop',
-                                text: 'Calcanhar e ponta do pé ao mesmo nível para uma postura correta.',
+                                icon: <HeartPlus size={32} color="white" />,
+                                title: 'Fisioterapeuticas',
+                                text: 'Desenvolvidos com base em princípios fisioterapêuticos para promover o desenvolvimento saudável do pé.',
                                 color: '#E8A87C'
                             },
                             {

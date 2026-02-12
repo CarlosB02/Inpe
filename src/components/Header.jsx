@@ -13,17 +13,8 @@ const Header = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Determine visibility
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        // Scrolling down & passed threshold -> Hide
-        setIsVisible(false);
-      } else {
-        // Scrolling up -> Show
-        setIsVisible(true);
-      }
-
+      // Apenas controla o estado de scroll (ex: sombra)
       setScrolled(currentScrollY > 20);
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -63,13 +54,13 @@ const Header = () => {
           display: 'flex',
           alignItems: 'center',
         }}>
-          <img src={logo} alt="Inpe Logo" style={{ height: '40px', width: 'auto' }} />
+          <img src={logo} alt="Inpe Logo" style={{ height: '45px', width: 'auto' }} />
         </Link>
 
         {/* Desktop Nav */}
         <nav className="desktop-nav" style={{ display: 'flex', gap: '24px', fontWeight: 'bold', fontSize: '0.9rem', color: '#555', textTransform: 'uppercase' }}>
           <Link to="/" className="nav-item">Início</Link>
-          <Link to="/colecoes" className="nav-item">Loja</Link>
+          <Link to="/loja" className="nav-item">Loja</Link>
           <Link to="#" className="nav-item">Porquê Inpe</Link>
           <Link to="/historia" className="nav-item">Nossa História</Link>
           <Link to="/contactos" className="nav-item">Contactos</Link>
@@ -116,7 +107,7 @@ const Header = () => {
           textAlign: 'center'
         }}>
           <Link to="/" onClick={() => setIsOpen(false)}>Início</Link>
-          <Link to="/colecoes" onClick={() => setIsOpen(false)}>Loja</Link>
+          <Link to="/loja" onClick={() => setIsOpen(false)}>Loja</Link>
           <Link to="/historia" onClick={() => setIsOpen(false)}>Nossa História</Link>
           <Link to="/contactos" onClick={() => setIsOpen(false)}>Contactos</Link>
         </div>

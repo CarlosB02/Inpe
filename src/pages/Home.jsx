@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Headset, ShieldCheck, Truck, Gift, ChevronLeft, ChevronRight, Palette, Leaf, Award, Lightbulb, Users, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import DotGrid from '../components/DotGrid';
 import ProductCard from '../components/ProductCard';
+import novaColecaoBg from '../assets/images/products_background.png';
 import ModelViewer from '../components/ModelViewer';
 import products from '../data/products';
 import { useEffect } from 'react';
@@ -136,7 +136,7 @@ const Home = () => {
                         Descubra o conforto natural para toda a família.
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                        <Link to="/colecoes" className="btn-primary" style={{ padding: '16px 32px', fontSize: '1rem', textDecoration: 'none' }}>
+                        <Link to="/loja" className="btn-primary" style={{ padding: '16px 32px', fontSize: '1rem', textDecoration: 'none' }}>
                             VER COLEÇÃO -&gt;
                         </Link>
                         <button className="btn-outline" style={{ padding: '16px 32px', fontSize: '1rem', color: 'white', borderColor: 'white' }}>
@@ -148,7 +148,7 @@ const Home = () => {
 
             {/* PRODUCTS SECTIONS WRAPPER */}
             <div style={{ position: 'relative', overflow: 'hidden', padding: '4rem 0' }}>
-                {/* DotGrid Background */}
+                {/* Background Image */}
                 <div style={{
                     position: 'absolute',
                     top: 0,
@@ -156,14 +156,11 @@ const Home = () => {
                     width: '100%',
                     height: '100%',
                     zIndex: 0,
-                    opacity: 0.4
-                }}>
-                    <DotGrid
-                        baseColor="#a8d6d3"
-                        activeColor="#f7c969"
-                        dotSize={10}
-                    />
-                </div>
+                    backgroundImage: `url(${novaColecaoBg})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }} />
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     {/* BEST SELLERS */}
@@ -205,7 +202,11 @@ const Home = () => {
             {/* COMFORT SECTION */}
             <section style={{
                 backgroundColor: 'var(--color-teal)',
-                padding: '6rem 2rem',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                padding: '0 2rem',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden'
@@ -214,12 +215,12 @@ const Home = () => {
 
                 {/* Central Shoe Image */}
                 {/* Central 3D Model */}
-                <div style={{ margin: '0 auto 3rem', maxWidth: '800px', height: '400px', position: 'relative' }}>
+                <div style={{ margin: '0 auto 3rem', maxWidth: '800px', height: '400px', position: 'relative', width: '100%' }}>
                     <ModelViewer modelPath="/shoe.glb" />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Link to="/colecoes" className="btn-primary" style={{ padding: '16px 40px', fontSize: '1.2rem', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+                    <Link to="/loja" className="btn-primary" style={{ padding: '16px 40px', fontSize: '1.2rem', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
                         VER COLEÇÃO -&gt;
                     </Link>
                 </div>
@@ -238,28 +239,31 @@ const Home = () => {
             </section>
 
             {/* SEASONS SPLIT */}
-            <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '600px' }}>
+            <section className="seasons-section" style={{ display: 'flex', height: '80vh', width: '100%' }}>
                 {/* Summer (Yellow) */}
                 <div style={{
                     backgroundColor: 'var(--color-primary)',
                     display: 'flex',
+                    flex: 1,
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '6rem 4rem',
-                    position: 'relative'
+                    padding: '2rem',
+                    position: 'relative',
+                    height: '100%'
                 }}>
-                    <h2 style={{ fontSize: '3.5rem', fontWeight: '900', color: '#006D8F', textTransform: 'uppercase', marginBottom: '2.5rem' }}>Verão</h2>
+                    <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: '900', color: '#006D8F', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Verão</h2>
 
                     <div style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '700px',
+                        maxWidth: '600px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: '3rem',
-                        gap: '2rem'
+                        marginBottom: '2rem',
+                        gap: '1rem',
+                        flex: 1
                     }}>
                         <motion.button
                             whileHover={{ scale: 1.2 }}
@@ -267,10 +271,10 @@ const Home = () => {
                             onClick={prevSummer}
                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#006D8F', padding: '10px' }}
                         >
-                            <ChevronLeft size={56} />
+                            <ChevronLeft size={48} />
                         </motion.button>
 
-                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '400px', alignItems: 'center' }}>
+                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '100%', maxHeight: '60%', alignItems: 'center' }}>
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={summerIndex}
@@ -296,22 +300,23 @@ const Home = () => {
                             onClick={nextSummer}
                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#006D8F', padding: '10px' }}
                         >
-                            <ChevronRight size={56} />
+                            <ChevronRight size={48} />
                         </motion.button>
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '300px' }}>
-                        <Link to="/colecoes/verao" style={{ textDecoration: 'none', width: '100%' }}>
+                        <Link to="/loja/verao" style={{ textDecoration: 'none', width: '100%' }}>
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 style={{
                                     backgroundColor: '#006D8F',
                                     color: 'white',
-                                    padding: '16px 32px',
+                                    padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
                                     borderRadius: '99px',
                                     fontWeight: 'bold',
                                     textAlign: 'center',
-                                    boxSizing: 'border-box'
+                                    boxSizing: 'border-box',
+                                    fontSize: 'clamp(0.85rem, 1vw, 1rem)'
                                 }}
                             >
                                 VER COLEÇÃO -&gt;
@@ -323,14 +328,15 @@ const Home = () => {
                             style={{
                                 backgroundColor: 'transparent',
                                 color: '#006D8F',
-                                padding: '16px 32px',
+                                padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
                                 borderRadius: '99px',
                                 border: '2px solid #006D8F',
                                 fontWeight: 'bold',
                                 fontFamily: 'var(--font-main)',
                                 cursor: 'pointer',
                                 width: '100%',
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                fontSize: 'clamp(0.85rem, 1vw, 1rem)'
                             }}
                         >
                             ADICIONAR AO CARRINHO
@@ -342,23 +348,26 @@ const Home = () => {
                 <div style={{
                     backgroundColor: 'var(--color-winter-blue)',
                     display: 'flex',
+                    flex: 1,
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '6rem 4rem',
-                    position: 'relative'
+                    padding: '2rem',
+                    position: 'relative',
+                    height: '100%'
                 }}>
-                    <h2 style={{ fontSize: '3.5rem', fontWeight: '900', color: 'var(--color-primary)', textTransform: 'uppercase', marginBottom: '2.5rem' }}>Inverno</h2>
+                    <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary)', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Inverno</h2>
 
                     <div style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '700px',
+                        maxWidth: '600px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: '3rem',
-                        gap: '2rem'
+                        marginBottom: '2rem',
+                        gap: '1rem',
+                        flex: 1
                     }}>
                         <motion.button
                             whileHover={{ scale: 1.2 }}
@@ -366,10 +375,10 @@ const Home = () => {
                             onClick={prevWinter}
                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-primary)', padding: '10px' }}
                         >
-                            <ChevronLeft size={56} />
+                            <ChevronLeft size={48} />
                         </motion.button>
 
-                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '400px', alignItems: 'center' }}>
+                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '100%', maxHeight: '60%', alignItems: 'center' }}>
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={winterIndex}
@@ -395,22 +404,23 @@ const Home = () => {
                             onClick={nextWinter}
                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-primary)', padding: '10px' }}
                         >
-                            <ChevronRight size={56} />
+                            <ChevronRight size={48} />
                         </motion.button>
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '300px' }}>
-                        <Link to="/colecoes/inverno" style={{ textDecoration: 'none', width: '100%' }}>
+                        <Link to="/loja/inverno" style={{ textDecoration: 'none', width: '100%' }}>
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 style={{
                                     backgroundColor: 'var(--color-primary)',
                                     color: 'white',
-                                    padding: '16px 32px',
+                                    padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
                                     borderRadius: '99px',
                                     fontWeight: 'bold',
                                     textAlign: 'center',
-                                    boxSizing: 'border-box'
+                                    boxSizing: 'border-box',
+                                    fontSize: 'clamp(0.85rem, 1vw, 1rem)'
                                 }}
                             >
                                 VER COLEÇÃO -&gt;
@@ -422,20 +432,28 @@ const Home = () => {
                             style={{
                                 backgroundColor: 'transparent',
                                 color: 'var(--color-primary)',
-                                padding: '16px 32px',
+                                padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
                                 borderRadius: '99px',
                                 border: '2px solid var(--color-primary)',
                                 fontWeight: 'bold',
                                 fontFamily: 'var(--font-main)',
                                 cursor: 'pointer',
                                 width: '100%',
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                fontSize: 'clamp(0.85rem, 1vw, 1rem)'
                             }}
                         >
                             ADICIONAR AO CARRINHO
                         </motion.button>
                     </div>
                 </div>
+                <style>{`
+                    @media (max-width: 768px) {
+                        .seasons-section {
+                            flex-direction: column !important;
+                        }
+                    }
+                `}</style>
             </section>
 
             {/* SERVICE FEATURES */}
@@ -501,139 +519,104 @@ const Home = () => {
             </section>
 
             {/* NEW SECTION: What We Offer */}
-            <section style={{ padding: '4rem 10%', backgroundColor: '#fff' }}>
+            <section style={{
+                minHeight: '100vh',
+                padding: '4rem 10%',
+                backgroundColor: '#fff',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}>
                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#333', marginBottom: '1rem', textTransform: 'uppercase' }}>O Que Oferecemos</h2>
                 </div>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '2rem',
-                    marginBottom: '2rem'
-                }}>
-                    {/* Row 1 */}
+
+                <style>{`
+                    .offer-grid {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 2rem;
+                        width: 100%;
+                    }
+                    @media (max-width: 1024px) {
+                        .offer-grid {
+                            grid-template-columns: repeat(2, 1fr);
+                        }
+                    }
+                    @media (max-width: 600px) {
+                        .offer-grid {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                `}</style>
+
+                <div className="offer-grid">
                     {[
-                        { icon: Palette, title: "Design", text: "Estilo moderno e atrativo para todas as ocasiões.", color: "#f7c969", bg: "#fffcf2" }, // Yellow
-                        { icon: Leaf, title: "Sustentabilidade", text: "Materiais eco-friendly e produção consciente.", color: "#006D8F", bg: "#e0f2f1" }, // Blue/Teal
-                        { icon: Award, title: "Qualidade", text: "Durabilidade e conforto em cada detalhe.", color: "#f7c969", bg: "#fffcf2" } // Yellow
-                    ].map((item, idx) => (
-                        <motion.div
-                            key={idx}
-                            whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}
-                            style={{
-                                backgroundColor: item.bg,
-                                padding: '2.5rem 2rem',
-                                borderRadius: '24px',
-                                textAlign: 'center',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                transition: 'all 0.3s ease',
-                                border: `1px solid ${item.color}20`
-                            }}>
-                            <div style={{
-                                backgroundColor: item.color,
-                                color: 'white',
-                                padding: '16px',
-                                borderRadius: '50%',
-                                marginBottom: '1.5rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                boxShadow: `0 8px 16px ${item.color}40`
-                            }}>
-                                <item.icon size={28} />
-                            </div>
-                            <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#2c3e50', marginBottom: '1rem' }}>{item.title}</h3>
-                            <p style={{ fontSize: '1rem', color: '#555', lineHeight: '1.6' }}>{item.text}</p>
-                        </motion.div>
-                    ))}
-                </div>
-
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '2rem',
-                    alignItems: 'stretch'
-                }}>
-                    {/* Row 2 */}
-                    <motion.div
-                        whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}
-                        style={{
-                            backgroundColor: '#e0f2f1', // Blue/Teal bg
-                            padding: '2.5rem 2rem',
-                            borderRadius: '24px',
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.3s ease',
-                            border: '1px solid #006D8F20'
-                        }}>
-                        <div style={{
-                            backgroundColor: '#006D8F',
-                            color: 'white',
-                            padding: '16px',
-                            borderRadius: '50%',
-                            marginBottom: '1.5rem',
-                            boxShadow: '0 8px 16px rgba(0, 109, 143, 0.4)'
-                        }}>
-                            <Lightbulb size={28} />
-                        </div>
-                        <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#2c3e50', marginBottom: '1rem' }}>Inovação</h3>
-                        <p style={{ fontSize: '1rem', color: '#555', lineHeight: '1.6' }}>Tecnologia barefoot de ponta.</p>
-                    </motion.div>
-
-                    <motion.div
-                        whileHover={{ scale: 1.03 }}
-                        style={{
-                            borderRadius: '24px',
-                            overflow: 'hidden',
-                            height: '100%',
-                            minHeight: '280px',
-                            position: 'relative',
-                            backgroundColor: '#fff',
-                            border: '1px solid #eee',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                        {/* Using a specific product image that might look good and fitting it properly */}
-                        <img
-                            src={products[26]?.image}
-                            alt="Feature"
-                            style={{ width: '90%', height: '90%', objectFit: 'contain' }}
-                        />
-                    </motion.div>
-
-                    <motion.div
-                        whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}
-                        style={{
-                            backgroundColor: '#fffcf2', // Yellow bg
-                            padding: '2.5rem 2rem',
-                            borderRadius: '24px',
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.3s ease',
-                            border: '1px solid #f7c96920'
-                        }}>
-                        <div style={{
-                            backgroundColor: '#f7c969',
-                            color: 'white',
-                            padding: '16px',
-                            borderRadius: '50%',
-                            marginBottom: '1.5rem',
-                            boxShadow: '0 8px 16px rgba(247, 201, 105, 0.4)'
-                        }}>
-                            <Users size={28} />
-                        </div>
-                        <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#2c3e50', marginBottom: '1rem' }}>Trabalho de Equipa</h3>
-                        <p style={{ fontSize: '1rem', color: '#555', lineHeight: '1.6' }}>Focados na sua satisfação.</p>
-                    </motion.div>
+                        { icon: Palette, title: "Design", text: "Estilo moderno e atrativo para todas as ocasiões.", color: "#f7c969", bg: "#fffcf2" },
+                        { icon: Leaf, title: "Sustentabilidade", text: "Materiais eco-friendly e produção consciente.", color: "#006D8F", bg: "#e0f2f1" },
+                        { icon: Award, title: "Qualidade", text: "Durabilidade e conforto em cada detalhe.", color: "#f7c969", bg: "#fffcf2" },
+                        { icon: Lightbulb, title: "Inovação", text: "Tecnologia barefoot de ponta.", color: "#006D8F", bg: "#e0f2f1" },
+                        { type: 'image', src: products[26]?.image },
+                        { icon: Users, title: "Trabalho de Equipa", text: "Focados na sua satisfação.", color: "#f7c969", bg: "#fffcf2" }
+                    ].map((item, idx) => {
+                        if (item.type === 'image') {
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    whileHover={{ scale: 1.03 }}
+                                    style={{
+                                        borderRadius: '24px',
+                                        overflow: 'hidden',
+                                        height: '100%',
+                                        minHeight: '200px',
+                                        position: 'relative',
+                                        backgroundColor: '#fff',
+                                        border: '1px solid #eee',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                    <img
+                                        src={item.src}
+                                        alt="Feature"
+                                        style={{ width: '80%', height: '80%', objectFit: 'contain' }}
+                                    />
+                                </motion.div>
+                            );
+                        }
+                        return (
+                            <motion.div
+                                key={idx}
+                                whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}
+                                style={{
+                                    backgroundColor: item.bg,
+                                    padding: '2rem',
+                                    borderRadius: '24px',
+                                    textAlign: 'center',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    transition: 'all 0.3s ease',
+                                    border: `1px solid ${item.color}20`
+                                }}>
+                                <div style={{
+                                    backgroundColor: item.color,
+                                    color: 'white',
+                                    padding: '16px',
+                                    borderRadius: '50%',
+                                    marginBottom: '1rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: `0 8px 16px ${item.color}40`
+                                }}>
+                                    <item.icon size={28} />
+                                </div>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#2c3e50', marginBottom: '0.5rem' }}>{item.title}</h3>
+                                <p style={{ fontSize: '0.9rem', color: '#555', lineHeight: '1.5' }}>{item.text}</p>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </section>
 
@@ -733,7 +716,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <Link to="/colecoes" className="btn-primary" style={{
+                    <Link to="/loja" className="btn-primary" style={{
                         padding: '18px 40px',
                         fontSize: '1rem',
                         fontWeight: 'bold',

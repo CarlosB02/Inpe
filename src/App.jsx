@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import History from './pages/History';
 import Collections from './pages/Collections';
 import SizeGuide from './pages/SizeGuide';
+import Product from './pages/Product';
 import Contact from './pages/Contact';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -34,8 +35,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/historia" element={<History />} />
 
-          <Route path="/colecoes" element={<Collections />} />
-          <Route path="/colecoes/:category" element={<Collections />} />
+          <Route path="/loja" element={<Collections />} />
+          <Route path="/loja/:category" element={<Collections />} />
+          <Route path="/produto/:id" element={<Product />} />
 
           <Route path="/guia-tamanhos" element={<SizeGuide />} />
           <Route path="/tamanhos-qualidade" element={<SizeGuide />} /> {/* Reused for footer link relevance */}

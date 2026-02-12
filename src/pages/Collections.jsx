@@ -77,7 +77,7 @@ const Collections = () => {
                 </p>
             </div>
 
-            <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start' }}>
+            <div className="collections-grid">
                 {/* Left Sidebar */}
                 <FilterSidebar filters={filters} setFilters={setFilters} />
 
@@ -93,7 +93,7 @@ const Collections = () => {
                         style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                            gap: '2.5rem'
+                            gap: '3rem'
                         }}
                     >
                         <AnimatePresence>
@@ -123,6 +123,20 @@ const Collections = () => {
                     </motion.div>
                 </div>
             </div>
+            <style>{`
+                .collections-grid {
+                    display: grid;
+                    grid-template-columns: 280px 1fr;
+                    gap: 3rem;
+                    align-items: start;
+                }
+                @media (max-width: 900px) {
+                    .collections-grid {
+                        grid-template-columns: 1fr;
+                        gap: 2rem;
+                    }
+                }
+            `}</style>
         </div>
     );
 };

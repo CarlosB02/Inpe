@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const ProductCard = ({ title, price, image, category, id }) => (
+const ProductCard = ({ title, price, image, category, id, compact = false }) => (
     <motion.div
-        whileHover={{ y: -8 }}
+        whileHover={{ y: compact ? -4 : -8 }}
         style={{
             backgroundColor: 'white',
-            borderRadius: '24px',
-            padding: '20px',
+            borderRadius: compact ? '16px' : '24px',
+            padding: compact ? '12px' : '20px',
             position: 'relative',
             boxShadow: 'var(--shadow-card)',
             display: 'flex',
@@ -15,15 +15,15 @@ const ProductCard = ({ title, price, image, category, id }) => (
             textDecoration: 'none',
             color: 'inherit',
             height: '100%',
-            minHeight: '340px'
+            minHeight: compact ? '260px' : '340px'
         }}
     >
         {/* Product Image */}
         <div style={{
-            height: '180px',
+            height: compact ? '120px' : '180px',
             backgroundColor: 'white',
-            borderRadius: '16px',
-            marginBottom: '16px',
+            borderRadius: compact ? '12px' : '16px',
+            marginBottom: compact ? '10px' : '16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -43,7 +43,7 @@ const ProductCard = ({ title, price, image, category, id }) => (
         </div>
 
         <h3 style={{
-            fontSize: '1.25rem',
+            fontSize: compact ? '1rem' : '1.25rem',
             fontWeight: '800',
             color: '#1f2937',
             marginBottom: '4px',
@@ -54,9 +54,9 @@ const ProductCard = ({ title, price, image, category, id }) => (
 
         {/* Small Description */}
         <p style={{
-            fontSize: '0.85rem',
+            fontSize: compact ? '0.75rem' : '0.85rem',
             color: '#9ca3af',
-            marginBottom: '16px',
+            marginBottom: compact ? '10px' : '16px',
             lineHeight: '1.4'
         }}>
             Conforto e liberdade para os teus pés
@@ -64,15 +64,15 @@ const ProductCard = ({ title, price, image, category, id }) => (
 
         <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{
-                fontSize: '1.5rem',
+                fontSize: compact ? '1.2rem' : '1.5rem',
                 fontWeight: 'bold',
                 color: '#854931' // New brown color
             }}>
                 €{price}
             </span>
             <button style={{
-                width: '52px',
-                height: '52px',
+                width: compact ? '36px' : '52px',
+                height: compact ? '36px' : '52px',
                 borderRadius: '50%',
                 backgroundColor: '#f7c969', // Yellow background
                 border: 'none',
@@ -81,7 +81,7 @@ const ProductCard = ({ title, price, image, category, id }) => (
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                fontSize: '1.75rem',
+                fontSize: compact ? '1.25rem' : '1.75rem',
                 transition: 'transform 0.2s',
             }}>+</button>
         </div>

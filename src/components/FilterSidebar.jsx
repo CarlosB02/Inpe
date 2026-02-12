@@ -184,7 +184,7 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 <div style={{ marginBottom: '2.5rem' }}>
                     <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#555' }}>Estilo</h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        {['Sapatilhas', 'Botas', 'Sandálias'].map(sc => (
+                        {['Botas', 'Desportivo', 'Lonas', 'Sandálias'].map(sc => (
                             <label key={sc} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', color: '#666', fontSize: '1rem' }}>
                                 <input
                                     type="checkbox"
@@ -240,31 +240,6 @@ const FilterSidebar = ({ filters, setFilters }) => {
                                 );
                             })}
                         </select>
-                    </div>
-                </div>
-
-                {/* Color Filter */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#555' }}>Cor</h4>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        {['#000000', '#FFFFFF', '#8B4513', '#1C1C1C', '#F5F5DC', '#A52A2A', '#000080', '#FF0000', '#00FF00', '#0000FF'].map(color => (
-                            <motion.button
-                                key={color}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => handleColorChange(color)}
-                                style={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '50%',
-                                    backgroundColor: color,
-                                    border: filters.colors?.includes(color) ? '3px solid var(--color-teal)' : '1px solid #ddd',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-                                }}
-                                title={color}
-                            />
-                        ))}
                     </div>
                 </div>
             </div>
