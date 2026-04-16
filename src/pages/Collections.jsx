@@ -39,8 +39,15 @@ const Collections = () => {
 
         // Size Filter
         if (filters.sizes.length > 0) {
-            // Check if product has ANY of the selected sizes
-            const hasSize = product.sizes && product.sizes.some(s => filters.sizes.includes(s));
+            let hasSize = false;
+            if (product.sizes) {
+                if (filters.sizes.includes('criança') && product.sizes.some(s => s <= 34)) {
+                    hasSize = true;
+                }
+                if (filters.sizes.includes('adulto') && product.sizes.some(s => s >= 35)) {
+                    hasSize = true;
+                }
+            }
             if (!hasSize) return false;
         }
 

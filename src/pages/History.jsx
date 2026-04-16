@@ -81,7 +81,7 @@ const History = () => {
                     <h2 style={sectionTitleStyle}>A Nossa Essência</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
                         {[
-                            { icon: <Footprints size={32} />, title: 'Liberdade', text: 'Respeitamos a anatomia natural do pé.', bg: historyLiberdade, ctaText: 'Sinta a liberdade' },
+                            { icon: <Footprints size={32} />, title: 'Liberdade', text: 'Respeitamos a anatomia natural do pé.', bg: historyLiberdade, ctaText: 'Sinta a liberdade', targetId: 'porque-inpe' },
                             { icon: <TreeDeciduous size={32} />, title: 'Sustentabilidade', text: 'Materiais amigos do ambiente sempre que possível.', bg: historySustentabilidade, ctaText: 'A nossa responsabilidade' },
                             { icon: <Heart size={32} />, title: 'Cuidado', text: 'Cada par é selecionado a pensar no conforto absoluto.', bg: historyCarinho, ctaText: 'Fale com a equipa' }
                         ].map((val, idx) => (
@@ -120,7 +120,13 @@ const History = () => {
                                 <p style={{ color: '#854931', marginBottom: '1.5rem' }}>{val.text}</p>
 
                                 <Link
-                                    to="/contactos"
+                                    to={val.targetId ? `#${val.targetId}` : "/contactos"}
+                                    onClick={(e) => {
+                                        if (val.targetId) {
+                                            e.preventDefault();
+                                            document.getElementById(val.targetId)?.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
                                     style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
@@ -178,7 +184,7 @@ const History = () => {
 
 
             {/* Filosofia Barefoot Section */}
-            <section style={{ backgroundColor: 'var(--color-background)', padding: '6rem 2rem' }}>
+            <section id="porque-inpe" style={{ backgroundColor: 'var(--color-background)', padding: '6rem 2rem' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <h2 style={{ ...sectionTitleStyle, color: '#F4C466' }}>Porquê Inpe?</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>

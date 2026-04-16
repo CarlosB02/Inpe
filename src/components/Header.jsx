@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = React.useRef(null);
   const lastScrollY = React.useRef(0);
+
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // If search is open, and click is outside the search bar, close it
+      if (isSearchOpen && searchInputRef.current) {
+         // Simplified approach for header context. Ideally we want to check if the click was inside a ref wrapping the whole search component
+         // For now, let's let the input lose focus handle it, or we add an overlay.
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSearchOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,13 +80,81 @@ const Header = () => {
         <nav className="desktop-nav" style={{ display: 'flex', gap: '24px', fontWeight: 'bold', fontSize: '0.9rem', color: '#555', textTransform: 'uppercase' }}>
           <Link to="/" className="nav-item">Início</Link>
           <Link to="/loja" className="nav-item">Loja</Link>
-          <Link to="#" className="nav-item">Porquê Inpe</Link>
           <Link to="/historia" className="nav-item">Nossa História</Link>
           <Link to="/contactos" className="nav-item">Contactos</Link>
         </nav>
 
-        {/* Cart Icon */}
+        {/* Action Icons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          
+          {/* Search Bar Container */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: isSearchOpen ? 'var(--color-background)' : 'transparent',
+            borderRadius: '50px',
+            padding: isSearchOpen ? '4px 8px' : '0',
+            transition: 'all 0.3s ease',
+            border: isSearchOpen ? '1px solid #eee' : '1px solid transparent'
+          }}>
+            <button
+                onClick={() => {
+                  setIsSearchOpen(!isSearchOpen);
+                  if (!isSearchOpen) {
+                    setTimeout(() => searchInputRef.current?.focus(), 100);
+                  } else {
+                    // Logic when closing (e.g., clear query? maybe send search evt?)
+                  }
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: isSearchOpen ? 'var(--color-primary)' : '#555',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '50%',
+                  transition: 'color 0.2s',
+                }}
+            >
+              <Search size={20} />
+            </button>
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Pesquisar..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                   // Handle search
+                   console.log("Searching for:", searchQuery);
+                   setIsSearchOpen(false);
+                } else if (e.key === 'Escape') {
+                   setIsSearchOpen(false);
+                }
+              }}
+              onBlur={() => {
+                  if (searchQuery.trim() === '') {
+                     setIsSearchOpen(false);
+                  }
+              }}
+              style={{
+                width: isSearchOpen ? '150px' : '0px',
+                opacity: isSearchOpen ? 1 : 0,
+                border: 'none',
+                background: 'transparent',
+                outline: 'none',
+                padding: isSearchOpen ? '0 8px 0 4px' : '0',
+                transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, padding 0.3s ease',
+                color: 'var(--color-text)',
+                fontSize: '0.9rem'
+              }}
+            />
+          </div>
+
           <button style={{
             background: 'var(--color-primary)',
             color: 'white',

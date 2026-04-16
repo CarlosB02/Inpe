@@ -202,44 +202,19 @@ const FilterSidebar = ({ filters, setFilters }) => {
                 {/* Size Filter */}
                 <div style={{ marginBottom: '2.5rem' }}>
                     <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#555' }}>Tamanho</h4>
-                    <div style={{ position: 'relative' }}>
-                        <select
-                            value={filters.sizes?.[0] || ''}
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                if (!val) {
-                                    setFilters({ ...filters, sizes: [] });
-                                } else {
-                                    setFilters({ ...filters, sizes: [Number(val)] });
-                                }
-                            }}
-                            style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                borderRadius: '12px',
-                                border: '1px solid #ddd',
-                                fontSize: '1rem',
-                                color: '#333',
-                                backgroundColor: '#f9f9f9',
-                                cursor: 'pointer',
-                                outline: 'none',
-                                appearance: 'none',
-                                backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'right 16px center',
-                                backgroundSize: '16px'
-                            }}
-                        >
-                            <option value="">Selecione um tamanho</option>
-                            {[...Array(29)].map((_, i) => {
-                                const size = i + 18; // 18 to 46
-                                return (
-                                    <option key={size} value={size}>
-                                        {size}
-                                    </option>
-                                );
-                            })}
-                        </select>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {['criança', 'adulto'].map(sizeCat => (
+                            <label key={sizeCat} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', color: '#666', fontSize: '1rem' }}>
+                                <input
+                                    type="checkbox"
+                                    value={sizeCat}
+                                    checked={filters.sizes?.includes(sizeCat)}
+                                    onChange={(e) => handleSizeChange(e.target.value)}
+                                    style={{ accentColor: 'var(--color-teal)', width: '18px', height: '18px' }}
+                                />
+                                <span style={{ textTransform: 'capitalize' }}>{sizeCat}</span>
+                            </label>
+                        ))}
                     </div>
                 </div>
             </div>
