@@ -14,7 +14,12 @@ const getImg = (index) => {
         const path = `../assets/products/p${index}${ext}`;
         if (images[path]) return images[path];
     }
-    return ''; // Should not happen if files exist
+    // Fallback for cases like p1 where only p1_1, p1_2 etc exist
+    for (const ext of possibleExtensions) {
+        const path = `../assets/products/p${index}_1${ext}`;
+        if (images[path]) return images[path];
+    }
+    return ''; 
 };
 
 // Function to get gallery images

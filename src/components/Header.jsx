@@ -11,6 +11,16 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = React.useRef(null);
   const lastScrollY = React.useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 850);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Close search when clicking outside
   useEffect(() => {
@@ -46,11 +56,11 @@ const Header = () => {
   return (
     <header style={{
       position: 'fixed',
-      top: '20px',
+      top: isMobile ? '8px' : '20px',
       left: 0,
       width: '100%',
       zIndex: 100,
-      padding: '0 2rem',
+      padding: isMobile ? '0 10px' : '0 2rem',
       display: 'flex',
       justifyContent: 'center',
       transition: 'transform 0.3s ease-in-out',
@@ -59,7 +69,7 @@ const Header = () => {
       <div style={{
         backgroundColor: 'white',
         borderRadius: '9999px',
-        padding: '12px 32px',
+        padding: isMobile ? '6px 16px' : '12px 32px',
         width: '100%',
         maxWidth: '1100px',
         display: 'flex',
@@ -73,7 +83,7 @@ const Header = () => {
           display: 'flex',
           alignItems: 'center',
         }}>
-          <img src={logo} alt="Inpe Logo" style={{ height: '45px', width: 'auto' }} />
+          <img src={logo} alt="Inpe Logo" style={{ height: isMobile ? '32px' : '45px', width: 'auto' }} />
         </Link>
 
         {/* Desktop Nav */}
@@ -156,16 +166,17 @@ const Header = () => {
           </div>
 
           <button style={{
-            background: 'var(--color-primary)',
-            color: 'white',
-            width: '40px',
-            height: '40px',
+            background: isMobile ? 'none' : 'var(--color-primary)',
+            color: isMobile ? '#555' : 'white',
+            width: isMobile ? 'auto' : '40px',
+            height: isMobile ? 'auto' : '40px',
             borderRadius: '50%',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            padding: isMobile ? '8px' : '0'
           }}>
             <ShoppingBag size={20} />
           </button>

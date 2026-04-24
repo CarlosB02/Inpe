@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Footprints, Heart, TreeDeciduous, Users, Maximize, Activity, Zap, HeartPlus, Feather, Sprout, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Footprints, Heart, TreeDeciduous, Users, Maximize, Activity, Zap, HeartPlus, Feather, Sprout, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import historyLiberdade from '../assets/history-liberdade.png';
 import historyCarinho from '../assets/history-carinho.png';
 import historySustentabilidade from '../assets/history-sustentabilidade.png';
 import foundersImg from '../assets/founders.png';
 
 const History = () => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
     return (
         <div style={{ paddingBottom: '6rem', overflowX: 'hidden' }}>
+            <style>
+                {`
+                .history-hero-title {
+                    color: var(--color-primary);
+                    font-size: 3.5rem;
+                    margin-bottom: 1.5rem;
+                    line-height: 1.1;
+                    font-family: var(--font-heading);
+                }
+
+                .mobile-only {
+                    display: none !important;
+                }
+
+                @media (max-width: 768px) {
+                    .history-hero-title {
+                        text-align: center;
+                        font-size: 3rem;
+                    }
+                    .mobile-only {
+                        display: flex !important;
+                    }
+                }
+                `}
+            </style>
 
             {/* A Origem Section */}
             <section style={{
@@ -41,13 +68,7 @@ const History = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <h1 style={{
-                        color: 'var(--color-primary)',
-                        fontSize: '3.5rem',
-                        marginBottom: '1.5rem',
-                        lineHeight: 1.1,
-                        fontFamily: 'var(--font-heading)'
-                    }}>
+                    <h1 className="history-hero-title">
                         A Nossa Pegada
                     </h1>
                     <div style={{
@@ -55,18 +76,57 @@ const History = () => {
                         lineHeight: 1.8,
                         fontSize: '1.1rem'
                     }}>
-                        <p style={{ marginBottom: '1.5rem' }}>
+                        <p style={{ marginBottom: '1.5rem', fontWeight: '500', fontStyle: 'italic' }}>
                             "Não é apenas sobre sapatos. É sobre dar liberdade a cada passo e deixar as crianças explorarem o mundo como a natureza planeou."
                         </p>
-                        <p style={{ marginBottom: '1.5rem' }}>
-                            Inês Santos e Inês Oliveira, são fisioterapeutas e mães de dois casais de crianças entre os 2 e os 6 anos. Foi a fisioterapia que as uniu há mais de 14 anos, mas foi a cumplicidade, a amizade e as aventuras por que passaram juntas que fizeram com que se mantivessem unidas até hoje.
-                        </p>
-                        <p style={{ marginBottom: '1.5rem' }}>
-                            A Inês Santos, ou Inês pequenina como carinhosamente a chamam para as diferenciarem, é hoje fisioterapeuta especialista em pediatria olhando as crianças de uma forma completa em simbiose com a natureza.
-                        </p>
-                        <p>
-                            A Inês Oliveira, empreendedora nata e uma verdadeira líder, é alguém que inspira com a sua visão e determinação. É sócia gerente da Clínica Fisiátrica de S. Pedro do Sul e tem como compromisso o bem-estar das pessoas e sua capacidade de transformar desafios em oportunidades.
-                        </p>
+                        
+                        <div className="history-bio-text">
+                            <AnimatePresence initial={false}>
+                                {(isExpanded || (typeof window !== 'undefined' && window.innerWidth > 768)) && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        style={{ overflow: 'hidden' }}
+                                    >
+                                        <p style={{ marginBottom: '1.5rem' }}>
+                                            Inês Santos e Inês Oliveira, são fisioterapeutas e mães de dois casais de crianças entre os 2 e os 6 anos. Foi a fisioterapia que as uniu há mais de 14 anos, mas foi a cumplicidade, a amizade e as aventuras por que passaram juntas que fizeram com que se mantivessem unidas até hoje.
+                                        </p>
+                                        <p style={{ marginBottom: '1.5rem' }}>
+                                            A Inês Santos, ou Inês pequenina como carinhosamente a chamam para as diferenciarem, é hoje fisioterapeuta especialista em pediatria olhando as crianças de uma forma completa em simbiose com a natureza.
+                                        </p>
+                                        <p>
+                                            A Inês Oliveira, empreendedora nata e uma verdadeira líder, é alguém que inspira com a sua visão e determinação. É sócia gerente da Clínica Fisiátrica de S. Pedro do Sul e tem como compromisso o bem-estar das pessoas e sua capacidade de transformar desafios em oportunidades.
+                                        </p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            <button 
+                                className="mobile-only"
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'var(--color-primary)',
+                                    fontWeight: 'bold',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    cursor: 'pointer',
+                                    marginTop: '1.5rem',
+                                    padding: '0',
+                                    fontFamily: 'inherit'
+                                }}
+                            >
+                                {isExpanded ? (
+                                    <>Ver Menos <ChevronUp size={20} /></>
+                                ) : (
+                                    <>Ler História Completa <ChevronDown size={20} /></>
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </motion.div>
             </section>
@@ -79,7 +139,7 @@ const History = () => {
             <section style={{ backgroundColor: '#fff', padding: '6rem 2rem' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <h2 style={sectionTitleStyle}>A Nossa Essência</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
+                    <div className="mobile-carousel">
                         {[
                             { icon: <Footprints size={32} />, title: 'Liberdade', text: 'Respeitamos a anatomia natural do pé.', bg: historyLiberdade, ctaText: 'Sinta a liberdade', targetId: 'porque-inpe' },
                             { icon: <TreeDeciduous size={32} />, title: 'Sustentabilidade', text: 'Materiais amigos do ambiente sempre que possível.', bg: historySustentabilidade, ctaText: 'A nossa responsabilidade' },
@@ -187,7 +247,7 @@ const History = () => {
             <section id="porque-inpe" style={{ backgroundColor: 'var(--color-background)', padding: '6rem 2rem' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <h2 style={{ ...sectionTitleStyle, color: '#F4C466' }}>Porquê Inpe?</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                    <div className="mobile-carousel">
                         {[
                             {
                                 icon: <Maximize size={32} color="white" />,

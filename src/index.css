@@ -113,3 +113,31 @@ img {
   border-radius: 20px;
   border: 3px solid var(--color-background);
 }
+
+/* Mobile Carousel */
+.mobile-carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    padding-inline: 1rem;
+    margin-inline: -1rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-carousel::-webkit-scrollbar {
+    height: 8px;
+  }
+  .mobile-carousel > * {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+  }
+}

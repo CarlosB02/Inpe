@@ -1,12 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
-import { Headset, ShieldCheck, Truck, Gift, ChevronLeft, ChevronRight, Palette, Leaf, Award, Lightbulb, Users, Heart } from 'lucide-react';
+import { Headset, ShieldCheck, Truck, Gift, ChevronLeft, ChevronRight, Palette, Leaf, Award, Lightbulb, Users, Heart, Instagram, MessageCircle } from 'lucide-react';
+import arrowBlue from '../assets/icons/arrow blue.png';
+import arrowYellow from '../assets/icons/arrow yellow.png';
+import veraoIcon from '../assets/icons/verao.png';
+import invernoIcon from '../assets/icons/inverno.png';
+import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import novaColecaoBg from '../assets/images/products_background.png';
 import ModelViewer from '../components/ModelViewer';
 import products from '../data/products';
-import { useEffect } from 'react';
+
 
 const AnimatedCounter = ({ from, to, duration }) => {
     const count = useMotionValue(from);
@@ -23,12 +28,33 @@ const AnimatedCounter = ({ from, to, duration }) => {
 
 
 const Home = () => {
+    const videoRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        if (videoRef.current) {
+            // Force mute and play for mobile compatibility
+            videoRef.current.muted = true;
+            videoRef.current.play().catch(error => {
+                console.log("Video autoplay failed, usually due to battery saver:", error);
+            });
+        }
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     // Select random products for existing sections and carousel
     const { bestSellers, newCollection, summerProducts, winterProducts } = useMemo(() => {
         const shuffled = [...products].sort(() => 0.5 - Math.random());
-        // Simple filtering relative to categories, fallback to defaults if not enough
-        const summer = products.filter(p => p.category === 'crianca' || p.category === 'sandalias').slice(0, 3);
-        const winter = products.filter(p => p.category === 'homem' || p.category === 'botas').slice(0, 3);
+        // Use shuffled products for variety and to avoid static broken paths
+        const summer = shuffled.filter(p => p.category === 'crianca' || p.category === 'sandalias').slice(0, 3);
+        const winter = shuffled.filter(p => p.category === 'homem' || p.category === 'botas').slice(0, 3);
 
         // Ensure we have 3 items even if filter is loose
         while (summer.length < 3) summer.push(products[Math.floor(Math.random() * products.length)]);
@@ -71,6 +97,7 @@ const Home = () => {
             }}>
                 {/* Video Background */}
                 <video
+                    ref={videoRef}
                     autoPlay
                     loop
                     muted
@@ -82,7 +109,8 @@ const Home = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        zIndex: -2
+                        zIndex: -2,
+                        backgroundColor: '#000' // Fallback color
                     }}
                 >
                     <source src="/hero_video.mp4" type="video/mp4" />
@@ -116,8 +144,8 @@ const Home = () => {
                         🌱 100% Orgânico & Ajustado para o pé
                     </div>
                     <h1 style={{
-                        fontSize: 'clamp(3rem, 6vw, 4.5rem)',
-                        lineHeight: 1.1,
+                        fontSize: 'clamp(1.7rem, 9vw, 4.5rem)',
+                        lineHeight: 1.05,
                         color: 'white',
                         fontWeight: '900',
                         marginBottom: '1rem',
@@ -127,7 +155,7 @@ const Home = () => {
                         Deixe os pezinhos <br /> andar livremente
                     </h1>
                     <p style={{
-                        fontSize: '1.5rem',
+                        fontSize: 'clamp(1rem, 3vw, 1.5rem)',
                         fontWeight: 'bold',
                         color: '#f0f0f0',
                         marginBottom: '3rem',
@@ -135,16 +163,91 @@ const Home = () => {
                     }}>
                         Descubra o conforto natural para toda a família.
                     </p>
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                        <Link to="/loja" className="btn-primary" style={{ padding: '16px 32px', fontSize: '1rem', textDecoration: 'none' }}>
-                            VER COLEÇÃO -&gt;
+                    <div style={{
+                        display: 'flex',
+                        gap: 'clamp(0.5rem, 2vw, 1rem)',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        padding: '0 10px'
+                    }}>
+                        <Link to="/loja" className="btn-primary" style={{
+                            padding: 'clamp(10px, 2vh, 18px) clamp(12px, 4vw, 32px)',
+                            fontSize: 'clamp(0.75rem, 2.5vw, 1rem)',
+                            textDecoration: 'none',
+                            whiteSpace: 'nowrap',
+                            flex: '0 1 auto',
+                            textAlign: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            VER COLEÇÃO
                         </Link>
-                        <button className="btn-outline" style={{ padding: '16px 32px', fontSize: '1rem', color: 'white', borderColor: 'white' }}>
-                            SUGESTÕES
+                        <button className="btn-outline" style={{
+                            padding: 'clamp(10px, 2vh, 18px) clamp(12px, 4vw, 32px)',
+                            fontSize: 'clamp(0.75rem, 2.5vw, 1rem)',
+                            color: 'white',
+                            borderColor: 'white',
+                            whiteSpace: 'nowrap',
+                            flex: '0 1 auto',
+                            textAlign: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            PARA A ESCOLA
                         </button>
                     </div>
                 </div>
             </section>
+
+            {/* TICKER CAROUSEL */}
+            <div style={{
+                backgroundColor: '#006D8F',
+                color: 'white',
+                padding: '12px 0',
+                overflow: 'hidden',
+                display: 'flex',
+                whiteSpace: 'nowrap',
+                position: 'relative',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                zIndex: 10
+            }}>
+                <style>{`
+                    @keyframes scroll-ticker {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
+                    }
+                    .ticker-content {
+                        display: flex;
+                        width: max-content;
+                        animation: scroll-ticker 20s linear infinite;
+                    }
+                    .ticker-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 0 40px;
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    .ticker-item svg {
+                        color: #f7c969;
+                    }
+                `}</style>
+                <div className="ticker-content">
+                    {[...Array(6)].map((_, i) => (
+                        <React.Fragment key={i}>
+                            <div className="ticker-item"><Headset size={20} /> Suporte Gratuito 24/7</div>
+                            <div className="ticker-item"><ShieldCheck size={20} /> Garantia de Devolução</div>
+                            <div className="ticker-item"><Truck size={20} /> Envios gratuitos</div>
+                        </React.Fragment>
+                    ))}
+                </div>
+            </div>
 
             {/* PRODUCTS SECTIONS WRAPPER */}
             <div style={{ position: 'relative', overflow: 'hidden', padding: '4rem 0' }}>
@@ -164,9 +267,11 @@ const Home = () => {
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     {/* BEST SELLERS */}
-                    <section style={{ padding: '0 12% 4rem' }}>
-                        <h2 style={{ fontSize: '2rem', fontWeight: '900', color: '#333', textTransform: 'uppercase', marginBottom: '2rem' }}>Mais Vendidos</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem' }}>
+                    <section style={{ padding: isMobile ? '0 0 3rem' : '0 8% 4rem' }}>
+                        <div style={{ padding: isMobile ? '0 5%' : '0' }}>
+                            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '900', color: '#333', textTransform: 'uppercase', marginBottom: '2rem' }}>Mais Vendidos</h2>
+                        </div>
+                        <div className={isMobile ? "mobile-shelf" : "products-grid"}>
                             {bestSellers.map(product => (
                                 <ProductCard
                                     key={product.id}
@@ -175,15 +280,16 @@ const Home = () => {
                                     image={product.image}
                                     category={product.subcategory || product.category}
                                     id={product.id}
+                                    compact={isMobile}
                                 />
                             ))}
                         </div>
                     </section>
 
                     {/* NEW COLLECTION */}
-                    <section style={{ padding: '0 12%' }}>
-                        <h2 style={{ fontSize: '2rem', fontWeight: '900', color: '#333', textTransform: 'uppercase', marginBottom: '2rem' }}>Nova Coleção</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem' }}>
+                    <section style={{ padding: isMobile ? '0 5% 3rem' : '0 8%' }}>
+                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '900', color: '#333', textTransform: 'uppercase', marginBottom: '2rem' }}>Nova Coleção</h2>
+                        <div className="products-grid">
                             {newCollection.map(product => (
                                 <ProductCard
                                     key={product.id}
@@ -192,6 +298,7 @@ const Home = () => {
                                     image={product.image}
                                     category={product.subcategory || product.category}
                                     id={product.id}
+                                    compact={isMobile}
                                 />
                             ))}
                         </div>
@@ -202,39 +309,54 @@ const Home = () => {
             {/* COMFORT SECTION */}
             <section style={{
                 backgroundColor: 'var(--color-teal)',
-                height: '100vh',
+                minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                padding: '0 2rem',
+                padding: 'clamp(3rem, 10vh, 6rem) 1.5rem',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                <h2 style={{ fontSize: '3rem', fontWeight: '900', color: '#854931', textTransform: 'uppercase', marginBottom: '3rem' }}>Conforto</h2>
+                <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', fontWeight: '900', color: '#854931', textTransform: 'uppercase', marginBottom: '3rem' }}>Conforto</h2>
 
                 {/* Central Shoe Image */}
                 {/* Central 3D Model */}
-                <div style={{ margin: '0 auto 3rem', maxWidth: '800px', height: '400px', position: 'relative', width: '100%' }}>
+                <div style={{
+                    margin: '0 auto 2rem',
+                    maxWidth: '800px',
+                    height: 'clamp(250px, 45vh, 400px)',
+                    position: 'relative',
+                    width: '100%'
+                }}>
                     <ModelViewer modelPath="/shoe.glb" />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Link to="/loja" className="btn-primary" style={{ padding: '16px 40px', fontSize: '1.2rem', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-                        VER COLEÇÃO -&gt;
+                    <Link to="/loja" className="btn-primary" style={{
+                        padding: 'clamp(12px, 2vh, 18px) clamp(24px, 4vw, 40px)',
+                        fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        textDecoration: 'none',
+                        marginTop: '1rem'
+                    }}>
+                        VER COLEÇÃO
                     </Link>
                 </div>
 
                 {/* Right Decorative Circle */}
                 <div style={{
                     position: 'absolute',
-                    bottom: '-10%',
-                    right: '-5%',
-                    width: '300px',
-                    height: '300px',
-                    border: '20px solid var(--color-primary)',
+                    bottom: isMobile ? '-50px' : '-10%',
+                    right: isMobile ? '-50px' : '-5%',
+                    width: isMobile ? '150px' : '300px',
+                    height: isMobile ? '150px' : '300px',
+                    border: `${isMobile ? '10px' : '20px'} solid var(--color-primary)`,
                     borderRadius: '50%',
-                    opacity: 0.6
+                    opacity: 0.6,
+                    zIndex: 0
                 }} />
             </section>
 
@@ -248,11 +370,20 @@ const Home = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '2rem',
+                    padding: isMobile ? '3rem 1.5rem 3rem' : '2rem 2rem 5rem',
                     position: 'relative',
+                    minHeight: isMobile ? '500px' : 'auto',
                     height: '100%'
                 }}>
-                    <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: '900', color: '#006D8F', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Verão</h2>
+                    <img
+                        src={veraoIcon}
+                        alt="Verão"
+                        style={{
+                            height: 'clamp(4rem, 10vw, 6rem)',
+                            width: 'auto',
+                            marginBottom: '2rem'
+                        }}
+                    />
 
                     <div style={{
                         position: 'relative',
@@ -269,12 +400,19 @@ const Home = () => {
                             whileHover={{ scale: 1.2 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={prevSummer}
-                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#006D8F', padding: '10px' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px' }}
                         >
-                            <ChevronLeft size={48} />
+                            <img src={arrowBlue} alt="right" style={{ width: '40px', height: 'auto', transform: 'rotate(360deg)' }} />
                         </motion.button>
 
-                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '100%', maxHeight: '60%', alignItems: 'center' }}>
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            height: '100%',
+                            maxHeight: isMobile ? '350px' : '60%',
+                            alignItems: 'center'
+                        }}>
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={summerIndex}
@@ -284,12 +422,25 @@ const Home = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -50 }}
                                     transition={{ duration: 0.3 }}
+                                    drag="x"
+                                    dragConstraints={{ left: 0, right: 0 }}
+                                    dragElastic={0.2}
+                                    onDragEnd={(e, { offset, velocity }) => {
+                                        const swipe = offset.x;
+                                        if (swipe < -50) {
+                                            nextSummer();
+                                        } else if (swipe > 50) {
+                                            prevSummer();
+                                        }
+                                    }}
                                     style={{
                                         maxWidth: '100%',
                                         maxHeight: '100%',
                                         objectFit: 'contain',
-                                        filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.15))'
+                                        filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.15))',
+                                        cursor: 'grab'
                                     }}
+                                    whileTap={{ cursor: 'grabbing' }}
                                 />
                             </AnimatePresence>
                         </div>
@@ -298,28 +449,37 @@ const Home = () => {
                             whileHover={{ scale: 1.2 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={nextSummer}
-                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#006D8F', padding: '10px' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px' }}
                         >
-                            <ChevronRight size={48} />
+                            <img src={arrowBlue} alt="left" style={{ width: '40px', height: 'auto', transform: 'rotate(180deg)' }} />
                         </motion.button>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '300px' }}>
-                        <Link to="/loja/verao" style={{ textDecoration: 'none', width: '100%' }}>
+                    <div style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        flexDirection: isMobile ? 'column' : 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
+                        maxWidth: isMobile ? '300px' : 'none',
+                        marginTop: isMobile ? '1rem' : '-1.5rem'
+                    }}>
+                        <Link to="/loja/verao" style={{ textDecoration: 'none', width: isMobile ? '100%' : 'auto' }}>
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 style={{
                                     backgroundColor: '#006D8F',
                                     color: 'white',
-                                    padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
+                                    padding: 'clamp(14px, 2vw, 18px) clamp(32px, 5vw, 48px)',
                                     borderRadius: '99px',
                                     fontWeight: 'bold',
                                     textAlign: 'center',
-                                    boxSizing: 'border-box',
-                                    fontSize: 'clamp(0.85rem, 1vw, 1rem)'
+                                    whiteSpace: 'nowrap',
+                                    fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)'
                                 }}
                             >
-                                VER COLEÇÃO -&gt;
+                                VER COLEÇÃO
                             </motion.div>
                         </Link>
                         <motion.button
@@ -328,15 +488,15 @@ const Home = () => {
                             style={{
                                 backgroundColor: 'transparent',
                                 color: '#006D8F',
-                                padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
+                                padding: 'clamp(14px, 2vw, 18px) clamp(32px, 5vw, 48px)',
                                 borderRadius: '99px',
                                 border: '2px solid #006D8F',
                                 fontWeight: 'bold',
                                 fontFamily: 'var(--font-main)',
                                 cursor: 'pointer',
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                fontSize: 'clamp(0.85rem, 1vw, 1rem)'
+                                width: isMobile ? '100%' : 'auto',
+                                whiteSpace: 'nowrap',
+                                fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)'
                             }}
                         >
                             ADICIONAR AO CARRINHO
@@ -352,11 +512,20 @@ const Home = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '2rem',
+                    padding: isMobile ? '3rem 1.5rem 3rem' : '2rem 2rem 5rem',
                     position: 'relative',
+                    minHeight: isMobile ? '500px' : 'auto',
                     height: '100%'
                 }}>
-                    <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary)', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Inverno</h2>
+                    <img
+                        src={invernoIcon}
+                        alt="Inverno"
+                        style={{
+                            height: 'clamp(4rem, 10vw, 6rem)',
+                            width: 'auto',
+                            marginBottom: '2rem'
+                        }}
+                    />
 
                     <div style={{
                         position: 'relative',
@@ -373,12 +542,19 @@ const Home = () => {
                             whileHover={{ scale: 1.2 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={prevWinter}
-                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-primary)', padding: '10px' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px' }}
                         >
-                            <ChevronLeft size={48} />
+                            <img src={arrowYellow} alt="Left" style={{ width: '40px', height: 'auto', transform: 'rotate(180deg)' }} />
                         </motion.button>
 
-                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', height: '100%', maxHeight: '60%', alignItems: 'center' }}>
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            height: '100%',
+                            maxHeight: isMobile ? '350px' : '60%',
+                            alignItems: 'center'
+                        }}>
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={winterIndex}
@@ -388,12 +564,25 @@ const Home = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -50 }}
                                     transition={{ duration: 0.3 }}
+                                    drag="x"
+                                    dragConstraints={{ left: 0, right: 0 }}
+                                    dragElastic={0.2}
+                                    onDragEnd={(e, { offset, velocity }) => {
+                                        const swipe = offset.x;
+                                        if (swipe < -50) {
+                                            nextWinter();
+                                        } else if (swipe > 50) {
+                                            prevWinter();
+                                        }
+                                    }}
                                     style={{
                                         maxWidth: '100%',
                                         maxHeight: '100%',
                                         objectFit: 'contain',
-                                        filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.15))'
+                                        filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.15))',
+                                        cursor: 'grab'
                                     }}
+                                    whileTap={{ cursor: 'grabbing' }}
                                 />
                             </AnimatePresence>
                         </div>
@@ -402,28 +591,37 @@ const Home = () => {
                             whileHover={{ scale: 1.2 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={nextWinter}
-                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-primary)', padding: '10px' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px' }}
                         >
-                            <ChevronRight size={48} />
+                            <img src={arrowYellow} alt="Right" style={{ width: '40px', height: 'auto' }} />
                         </motion.button>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '300px' }}>
-                        <Link to="/loja/inverno" style={{ textDecoration: 'none', width: '100%' }}>
+                    <div style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        flexDirection: isMobile ? 'column' : 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
+                        maxWidth: isMobile ? '300px' : 'none',
+                        marginTop: isMobile ? '1rem' : '-1.5rem'
+                    }}>
+                        <Link to="/loja/inverno" style={{ textDecoration: 'none', width: isMobile ? '100%' : 'auto' }}>
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 style={{
                                     backgroundColor: 'var(--color-primary)',
                                     color: 'white',
-                                    padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
+                                    padding: 'clamp(14px, 2vw, 18px) clamp(32px, 5vw, 48px)',
                                     borderRadius: '99px',
                                     fontWeight: 'bold',
                                     textAlign: 'center',
-                                    boxSizing: 'border-box',
-                                    fontSize: 'clamp(0.85rem, 1vw, 1rem)'
+                                    whiteSpace: 'nowrap',
+                                    fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)'
                                 }}
                             >
-                                VER COLEÇÃO -&gt;
+                                VER COLEÇÃO
                             </motion.div>
                         </Link>
                         <motion.button
@@ -432,15 +630,15 @@ const Home = () => {
                             style={{
                                 backgroundColor: 'transparent',
                                 color: 'var(--color-primary)',
-                                padding: 'clamp(10px, 1.2vw, 16px) clamp(20px, 2vw, 28px)',
+                                padding: 'clamp(14px, 2vw, 18px) clamp(32px, 5vw, 48px)',
                                 borderRadius: '99px',
                                 border: '2px solid var(--color-primary)',
                                 fontWeight: 'bold',
                                 fontFamily: 'var(--font-main)',
                                 cursor: 'pointer',
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                fontSize: 'clamp(0.85rem, 1vw, 1rem)'
+                                width: isMobile ? '100%' : 'auto',
+                                whiteSpace: 'nowrap',
+                                fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)'
                             }}
                         >
                             ADICIONAR AO CARRINHO
@@ -448,11 +646,39 @@ const Home = () => {
                     </div>
                 </div>
                 <style>{`
-                    @media (max-width: 768px) {
-                        .seasons-section {
-                            flex-direction: column !important;
+                        @media (max-width: 768px) {
+                            .seasons-section {
+                                flex-direction: column !important;
+                                height: auto !important;
+                            }
                         }
-                    }
+                        .products-grid {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 1rem;
+                        }
+                        .mobile-shelf {
+                            display: flex;
+                            overflow-x: auto;
+                            scroll-snap-type: x mandatory;
+                            gap: 1.5rem;
+                            padding: 0 5% 2rem;
+                            scroll-behavior: smooth;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                        .mobile-shelf::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .mobile-shelf > * {
+                            flex: 0 0 80%;
+                            scroll-snap-align: center;
+                        }
+                        @media (min-width: 768px) {
+                            .products-grid {
+                                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                                gap: 2rem;
+                            }
+                        }
                 `}</style>
             </section>
 
@@ -519,19 +745,27 @@ const Home = () => {
             </section>
 
             {/* NEW SECTION: What We Offer */}
-            <section style={{
-                minHeight: '100vh',
-                padding: '4rem 10%',
+            <section className="what-we-offer-section" style={{
                 backgroundColor: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#333', marginBottom: '1rem', textTransform: 'uppercase' }}>O Que Oferecemos</h2>
+                    <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: '900', color: '#333', marginBottom: '1rem', textTransform: 'uppercase' }}>O Que Oferecemos</h2>
                 </div>
 
                 <style>{`
+                    .what-we-offer-section {
+                        min-height: 100vh;
+                        padding: 4rem 10%;
+                    }
+                    @media (max-width: 768px) {
+                        .what-we-offer-section {
+                            min-height: auto;
+                            padding: 3rem 5%;
+                        }
+                    }
                     .offer-grid {
                         display: grid;
                         grid-template-columns: repeat(3, 1fr);
@@ -543,9 +777,24 @@ const Home = () => {
                             grid-template-columns: repeat(2, 1fr);
                         }
                     }
-                    @media (max-width: 600px) {
+                    @media (max-width: 768px) {
                         .offer-grid {
-                            grid-template-columns: 1fr;
+                            display: flex;
+                            overflow-x: auto;
+                            scroll-snap-type: x mandatory;
+                            gap: 1.5rem;
+                            padding-bottom: 2rem;
+                            padding-inline: 1rem;
+                            margin-inline: -1rem;
+                            scroll-behavior: smooth;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                        .offer-grid::-webkit-scrollbar {
+                            height: 8px;
+                        }
+                        .offer-grid > * {
+                            flex: 0 0 85%;
+                            scroll-snap-align: center;
                         }
                     }
                 `}</style>
@@ -620,117 +869,128 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* NEW SECTION: Built for Everyday Needs */}
+            {/* NEW SECTION: Instagram Feed */}
             <section style={{
                 padding: '6rem 10%',
                 backgroundColor: '#fffdf9',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '4rem',
+                display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                overflow: 'hidden' // Ensure rotation doesn't cause scroll
+                overflow: 'hidden'
             }}>
-                {/* Left: Circular Rotating Cards */}
-                <div style={{ position: 'relative', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {/* Orbit Container */}
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                        style={{
-                            position: 'relative',
-                            width: '300px', // Orbit diameter
-                            height: '300px',
-                            borderRadius: '50%',
-                            // border: '1px dashed #ccc', // Debug circle
-                        }}
-                    >
-                        {[...bestSellers].slice(0, 3).map((prod, i) => {
-                            const angle = (i * 360) / 3; // 0, 120, 240
-                            const radius = 150; // Distance from center
-                            // Calculate CSS variable-like positions or just use rotation transforms
-                            // Easier to transform rotate(angle) translate(radius) rotate(-angle)
-                            // But parent rotates 360.
-                            // To keep images upright, they need to rotate -360 at same speed.
+                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                        <Instagram size={32} color="#E1306C" />
+                        <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: '900', color: '#1a1a1a', textTransform: 'uppercase', margin: 0 }}>
+                            Acompanhe a nossa caminhada
+                        </h2>
+                    </div>
+                    <a href="https://www.instagram.com/inpe_barefoot/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '1.2rem', color: '#006D8F', fontWeight: 'bold', textDecoration: 'none' }}>
+                        @inpe_barefoot
+                    </a>
+                </div>
 
-                            return (
+                {/* Instagram Mock Grid */}
+                <div className="instagram-grid" style={{ width: '100%', marginBottom: '3rem' }}>
+                    {[...bestSellers, ...newCollection].slice(0, 4).map((prod, i) => (
+                        <a key={i} href="https://www.instagram.com/inpe_barefoot/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
+                            <motion.div
+                                whileHover="hover"
+                                initial="initial"
+                                style={{
+                                    position: 'relative',
+                                    aspectRatio: '1/1',
+                                    backgroundColor: '#fff',
+                                    borderRadius: '16px',
+                                    overflow: 'hidden',
+                                    boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '2rem'
+                                }}
+                            >
+                                <img src={prod.image} alt="Instagram Post" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+
+                                {/* Overlay */}
                                 <motion.div
-                                    key={prod.id}
+                                    variants={{ initial: { opacity: 0 }, hover: { opacity: 1 } }}
+                                    transition={{ duration: 0.2 }}
                                     style={{
                                         position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        width: '200px',
-                                        marginLeft: '-100px',
-                                        marginTop: '-120px',
-                                        transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`,
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        backgroundColor: 'rgba(0,0,0,0.4)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '2rem',
+                                        color: 'white'
                                     }}
                                 >
-                                    <motion.div
-                                        animate={{ rotate: -360 }}
-                                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                        style={{
-                                            backgroundColor: 'white',
-                                            borderRadius: '20px',
-                                            padding: '1rem',
-                                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                                            textAlign: 'center',
-                                            border: '1px solid #eee'
-                                        }}
-                                    >
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
-                                            <div style={{ background: '#fafafa', borderRadius: '50%', padding: '4px' }}>
-                                                <Heart size={14} fill="#eb5757" color="#eb5757" />
-                                            </div>
-                                        </div>
-                                        <img src={prod.image} alt={prod.name} style={{ width: '100%', height: '120px', objectFit: 'contain', marginBottom: '0.5rem' }} />
-                                        <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#333' }}>{prod.name}</div>
-                                    </motion.div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                                        <Heart size={28} fill="white" /> {Math.floor(Math.random() * 200) + 50}
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                                        <MessageCircle size={28} fill="white" /> {Math.floor(Math.random() * 20) + 2}
+                                    </div>
                                 </motion.div>
-                            )
-                        })}
-                    </motion.div>
+                            </motion.div>
+                        </a>
+                    ))}
                 </div>
 
-                {/* Right: Content */}
-                <div>
-                    <h2 style={{ fontSize: '3rem', fontWeight: '900', color: '#1a1a1a', lineHeight: '1.1', marginBottom: '1.5rem' }}>
-                        Criado para o seu <br /> Dia a Dia
-                    </h2>
-                    <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: '1.6', marginBottom: '3rem' }}>
-                        Desenhado para acompanhar o ritmo da sua vida, oferecendo o equilíbrio perfeito entre estilo, conforto e saúde para os seus pés.
-                    </p>
+                <a href="https://www.instagram.com/inpe_barefoot/" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{
+                    padding: 'clamp(14px, 2.5vh, 20px) clamp(30px, 5vw, 50px)',
+                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                    fontWeight: 'bold',
+                    textDecoration: 'none',
+                    backgroundColor: '#E1306C', // Instagram Pink/Red
+                    color: 'white',
+                    borderRadius: '99px',
+                    boxShadow: '0 10px 20px rgba(225, 48, 108, 0.4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    transition: 'transform 0.2s ease',
+                    textAlign: 'center'
+                }}>
+                    <Instagram size={24} /> Siga-nos no Instagram
+                </a>
 
-                    <div style={{ display: 'flex', gap: '4rem', marginBottom: '3rem', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd', padding: '2rem 0' }}>
-                        <div>
-                            <div style={{ fontSize: '3rem', fontWeight: '800', color: '#006D8F', display: 'flex', alignItems: 'center' }}>
-                                <AnimatedCounter from={0} to={15} duration={2} />+
-                            </div>
-                            <div style={{ fontSize: '0.9rem', color: '#666', fontWeight: '600', textTransform: 'uppercase' }}>Anos de Inovação</div>
-                        </div>
-                        <div style={{ width: '1px', backgroundColor: '#ddd' }}></div>
-                        <div>
-                            <div style={{ fontSize: '3rem', fontWeight: '800', color: '#006D8F', display: 'flex', alignItems: 'center' }}>
-                                <AnimatedCounter from={0} to={95} duration={2} />k
-                            </div>
-                            <div style={{ fontSize: '0.9rem', color: '#666', fontWeight: '600', textTransform: 'uppercase' }}>Pés Felizes</div>
-                        </div>
-                    </div>
-
-                    <Link to="/loja" className="btn-primary" style={{
-                        padding: '18px 40px',
-                        fontSize: '1rem',
-                        fontWeight: 'bold',
-                        textDecoration: 'none',
-                        backgroundColor: '#f7c969', // Brand Yellow
-                        color: '#1a1a1a',
-                        borderRadius: '99px',
-                        boxShadow: '0 10px 20px rgba(247, 201, 105, 0.4)',
-                        display: 'inline-block',
-                        transition: 'transform 0.2s ease'
-                    }}>
-                        Explorar Categorias
-                    </Link>
-                </div>
+                <style>{`
+                    .instagram-grid {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 2rem;
+                    }
+                    @media (max-width: 1024px) {
+                        .instagram-grid {
+                            grid-template-columns: repeat(2, 1fr);
+                        }
+                    }
+                    @media (max-width: 768px) {
+                        .instagram-grid {
+                            display: flex;
+                            overflow-x: auto;
+                            scroll-snap-type: x mandatory;
+                            gap: 1rem;
+                            padding-bottom: 1rem;
+                            scroll-behavior: smooth;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                        .instagram-grid::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .instagram-grid > * {
+                            flex: 0 0 85%;
+                            scroll-snap-align: center;
+                        }
+                    }
+                `}</style>
             </section>
         </div>
     );
